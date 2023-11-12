@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AppContext from './AppContext';
 import Home from './Home';
+import About from './About';
 import Editor from './Editor';
 import Character from './Character';
 import Abilities from './Abilities';
@@ -97,6 +98,7 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Home'>
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="About" component={About}/>
           <Stack.Screen name="Editor" component={Editor}/>
           <Stack.Screen name="Character" component={Character}/>
           <Stack.Screen name="Abilities" component={Abilities}/>

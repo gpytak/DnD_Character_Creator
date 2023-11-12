@@ -39,6 +39,7 @@ const Home = ({navigation}) => {
       <View style={styles.listButtons}>
         <Button title="New Character" color="#008000" onPress={() => {createCharacter()}}/>
         <Button title="Filter" onPress={() => {}}/>
+        <Button title="About" onPress={() => {navigation.navigate('About')}}/>
       </View>
 
       <FlatList
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   listButtons: {
     padding: 15,
     flexDirection: 'row',
-    gap: 150,
+    gap: 50,
     alignItems: 'center',
     borderColor: 'grey'
   },
