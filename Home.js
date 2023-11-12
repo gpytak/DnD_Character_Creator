@@ -11,15 +11,6 @@ import {
 const Home = ({navigation}) => {
   const context = React.useContext(AppContext);
 
-  const showComplete = (item) => {
-      return (
-        <View style={styles.itemButtons}>
-          <Button title="Edit" color="#008000" onPress={() => {navigation.navigate('Editor', { characterID: item.id })}}/>
-          <Button title="X" color="red" onPress={() => context.removeCharacter(item.id)}/>
-        </View>
-      )
-  }
-
   function createCharacter() {
     context.addCharacter({
       id: Date.now().toString(),
@@ -38,12 +29,10 @@ const Home = ({navigation}) => {
       <Text style={styles.title2}>Character Creator</Text>
       <View style={styles.listButtons}>
         <Button title="New Character" color="#008000" onPress={() => {createCharacter()}}/>
-        <Button title="Filter" onPress={() => {}}/>
         <Button title="About" onPress={() => {navigation.navigate('About')}}/>
       </View>
 
       <FlatList
-        // data={ isEnabled ? context.tasks : context.tasks.filter((t) => t.complete == false) }
         data={context.characters}
         renderItem={({ item }) =>
           <View style={styles.charContainer}>
@@ -54,7 +43,6 @@ const Home = ({navigation}) => {
               <Button title="Edit" color="#008000" onPress={() => {navigation.navigate('Editor', { characterID: item.id })}}/>
               <Button title="X" color="red" onPress={() => context.removeCharacter(item.id)}/>
             </View>
-            {/* {showComplete(item)} */}
           </View>
         }
         keyExtractor={(item) => item.id}
@@ -79,9 +67,9 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   listButtons: {
-    padding: 15,
+    padding: 10,
     flexDirection: 'row',
-    gap: 50,
+    gap: 175,
     alignItems: 'center',
     borderColor: 'grey'
   },
