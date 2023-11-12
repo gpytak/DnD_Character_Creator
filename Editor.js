@@ -38,6 +38,10 @@ const Editor = ({route, navigation}) => {
           onPress={() => navigation.navigate('Skills', { characterID: character.id })}
         />
         <Drawer.Item
+          label="Proficency"
+          onPress={() => navigation.navigate('Proficency', { characterID: character.id })}
+        />
+        <Drawer.Item
           label="Description"
           onPress={() => navigation.navigate('Description', { characterID: character.id })}
         />

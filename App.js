@@ -12,6 +12,7 @@ import Abilities from './Abilities';
 import Saves from './Saves';
 import Senses from './Senses';
 import Skills from './Skills';
+import Proficency from './Proficency';
 import Description from './Description';
 
 const Stack = createNativeStackNavigator();
@@ -75,6 +76,12 @@ const App = () => {
         stealth: newCharacter.skills.stealth,
         survival: newCharacter.skills.survival
       },
+      prof: {
+        armor: newCharacter.prof.armor,
+        weapons: newCharacter.prof.weapons,
+        tools: newCharacter.prof.tools,
+        lang: newCharacter.prof.lang
+      },
       desc: {
         background: newCharacter.desc.background,
         align: newCharacter.desc.align,
@@ -124,7 +131,7 @@ const App = () => {
           <Stack.Screen name="Saves" component={Saves}/>
           <Stack.Screen name="Senses" component={Senses}/>
           <Stack.Screen name="Skills" component={Skills}/>
-
+          <Stack.Screen name="Proficency" component={Proficency}/>
           <Stack.Screen name="Description" component={Description}/>
         </Stack.Navigator>
       </NavigationContainer>
