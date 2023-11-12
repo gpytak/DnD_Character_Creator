@@ -12,6 +12,7 @@ import Abilities from './Abilities';
 import Saves from './Saves';
 import Senses from './Senses';
 import Skills from './Skills';
+import Description from './Description';
 
 const Stack = createNativeStackNavigator();
 
@@ -74,6 +75,24 @@ const App = () => {
         stealth: newCharacter.skills.stealth,
         survival: newCharacter.skills.survival
       },
+      desc: {
+        background: newCharacter.desc.background,
+        align: newCharacter.desc.align,
+        gender: newCharacter.desc.gender,
+        eyes: newCharacter.desc.eyes,
+        size: newCharacter.desc.size,
+        height: newCharacter.desc.height,
+        faith: newCharacter.desc.faith,
+        hair: newCharacter.desc.hair,
+        skin: newCharacter.desc.skin,
+        age: newCharacter.desc.age,
+        weight: newCharacter.desc.weight,
+        traits: newCharacter.desc.traits,
+        ideals: newCharacter.desc.ideals,
+        bonds: newCharacter.desc.bonds,
+        flaws: newCharacter.desc.flaws,
+        appear: newCharacter.desc.appear
+      }
     }]);
   };
 
@@ -105,6 +124,8 @@ const App = () => {
           <Stack.Screen name="Saves" component={Saves}/>
           <Stack.Screen name="Senses" component={Senses}/>
           <Stack.Screen name="Skills" component={Skills}/>
+
+          <Stack.Screen name="Description" component={Description}/>
         </Stack.Navigator>
       </NavigationContainer>
     </AppContext.Provider>

@@ -37,6 +37,10 @@ const Editor = ({route, navigation}) => {
           label="Skills"
           onPress={() => navigation.navigate('Skills', { characterID: character.id })}
         />
+        <Drawer.Item
+          label="Description"
+          onPress={() => navigation.navigate('Description', { characterID: character.id })}
+        />
       </Drawer.Section>
       
       <Button title="Done" color="#008000" onPress={() => {
