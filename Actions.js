@@ -8,7 +8,7 @@ import {
   TextInput
 } from 'react-native';
 
-const Inventory = ({route, navigation}) => {
+const Actions = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
@@ -18,7 +18,7 @@ const Inventory = ({route, navigation}) => {
   function showSenses () {
     return (
       <View style={styles.listStats}>
-        <Text style={styles.title}>Inventory</Text>
+        <Text style={styles.title}>Actions</Text>
         <View style={styles.charContainer}>
           <Text style={styles.label}>Armor</Text>
           <TextInput style={styles.charInfo} placeholder={character.prof.armor} onChangeText={setArmor} value={armor}/>
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Inventory;
+export default Actions;

@@ -7,6 +7,7 @@ import {
   Text,
   FlatList
 } from 'react-native';
+// import { Button } from 'react-native-paper';
 
 const Home = ({navigation}) => {
   const context = React.useContext(AppContext);
@@ -30,7 +31,7 @@ const Home = ({navigation}) => {
       <Text style={styles.title}>Dungeons & Dragons</Text>
       <Text style={styles.title2}>Character Creator</Text>
       <View style={styles.listButtons}>
-        <Button title="New Character" color="#008000" onPress={() => {createCharacter()}}/>
+        <Button title="New Character" icon="bathtub" mode="contained" color="#008000" onPress={() => {createCharacter()}}/>
         <Button title="About" onPress={() => {navigation.navigate('About')}}/>
       </View>
 

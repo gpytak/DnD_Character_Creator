@@ -8,7 +8,7 @@ import {
   TextInput
 } from 'react-native';
 
-const Proficency = ({route, navigation}) => {
+const Spells = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Proficency;
+export default Spells;

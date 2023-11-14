@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { PaperProvider } from 'react-native-paper';
 
 import AppContext from './AppContext';
 import Home from './Home';
@@ -12,6 +13,7 @@ import Abilities from './Abilities';
 import Saves from './Saves';
 import Senses from './Senses';
 import Skills from './Skills';
+import Actions from './Actions';
 import Inventory from './Inventory';
 import Spells from './Spells';
 import Features from './Features';
@@ -128,6 +130,7 @@ const App = () => {
   };
 
   return (
+    // <PaperProvider>
     <AppContext.Provider value={contextValue}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Home'>
@@ -139,6 +142,7 @@ const App = () => {
           <Stack.Screen name="Saves" component={Saves}/>
           <Stack.Screen name="Senses" component={Senses}/>
           <Stack.Screen name="Skills" component={Skills}/>
+          <Stack.Screen name="Actions" component={Actions}/>
           <Stack.Screen name="Inventory" component={Inventory}/>
           <Stack.Screen name="Spells" component={Spells}/>
           <Stack.Screen name="Features" component={Features}/>
@@ -147,6 +151,7 @@ const App = () => {
         </Stack.Navigator>
       </NavigationContainer>
     </AppContext.Provider>
+    // </PaperProvider>
   );
  }
 
