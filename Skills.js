@@ -140,7 +140,8 @@ const styles = StyleSheet.create({
     borderColor: 'green',
     borderWidth: 0.5,
     fontSize: 12,
-    padding: 5
+    padding: 5,
+    color: 'black'
   }
 });
 

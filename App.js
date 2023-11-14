@@ -12,6 +12,9 @@ import Abilities from './Abilities';
 import Saves from './Saves';
 import Senses from './Senses';
 import Skills from './Skills';
+import Inventory from './Inventory';
+import Spells from './Spells';
+import Features from './Features';
 import Proficency from './Proficency';
 import Description from './Description';
 
@@ -76,6 +79,11 @@ const App = () => {
         stealth: newCharacter.skills.stealth,
         survival: newCharacter.skills.survival
       },
+      feat: {
+        classs: newCharacter.feat.classs,
+        racial: newCharacter.feat.racial,
+        feats: newCharacter.feat.feats
+      },
       prof: {
         armor: newCharacter.prof.armor,
         weapons: newCharacter.prof.weapons,
@@ -131,6 +139,9 @@ const App = () => {
           <Stack.Screen name="Saves" component={Saves}/>
           <Stack.Screen name="Senses" component={Senses}/>
           <Stack.Screen name="Skills" component={Skills}/>
+          <Stack.Screen name="Inventory" component={Inventory}/>
+          <Stack.Screen name="Spells" component={Spells}/>
+          <Stack.Screen name="Features" component={Features}/>
           <Stack.Screen name="Proficency" component={Proficency}/>
           <Stack.Screen name="Description" component={Description}/>
         </Stack.Navigator>

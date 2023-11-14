@@ -38,6 +38,18 @@ const Editor = ({route, navigation}) => {
           onPress={() => navigation.navigate('Skills', { characterID: character.id })}
         />
         <Drawer.Item
+          label="Inventory"
+          onPress={() => navigation.navigate('Inventory', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Spells"
+          onPress={() => navigation.navigate('Spells', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Features and Traits"
+          onPress={() => navigation.navigate('Features', { characterID: character.id })}
+        />
+        <Drawer.Item
           label="Proficency"
           onPress={() => navigation.navigate('Proficency', { characterID: character.id })}
         />
@@ -92,7 +104,8 @@ const styles = StyleSheet.create({
     borderColor: 'green',
     borderWidth: 0.5,
     fontSize: 14,
-    padding: 5
+    padding: 5,
+    color: 'black'
   }
 });
 

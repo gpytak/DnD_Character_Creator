@@ -114,7 +114,8 @@ const styles = StyleSheet.create({
     borderColor: 'green',
     borderWidth: 0.5,
     fontSize: 14,
-    padding: 5
+    padding: 5,
+    color: 'black'
   }
 });
 

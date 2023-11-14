@@ -8,35 +8,30 @@ import {
   TextInput
 } from 'react-native';
 
-const Proficency = ({route, navigation}) => {
+const Features = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
 
-  const [armor, setArmor] = useState(character.prof.armor);
-  const [weapons, setWeapons] = useState(character.prof.weapons);
-  const [tools, setTools] = useState(character.prof.tools);
-  const [lang, setLang] = useState(character.prof.lang);
+  const [classs, setClasss] = useState(character.feat.classs);
+  const [racial, setRacial] = useState(character.feat.racial);
+  const [feats, setFeats] = useState(character.feat.feats);
 
   function showSenses () {
     return (
       <View style={styles.listStats}>
-        <Text style={styles.title}>Proficencies and Languages</Text>
+        <Text style={styles.title}>Features and Traits</Text>
         <View style={styles.charContainer}>
-          <Text style={styles.label}>Armor</Text>
-          <TextInput style={styles.charInfo} placeholder={character.prof.armor} onChangeText={setArmor} value={armor}/>
+          <Text style={styles.label}>Class Features</Text>
+          <TextInput style={styles.charInfo} placeholder={character.feat.classs} onChangeText={setClasss} value={classs}/>
         </View>
         <View style={styles.charContainer}>
-          <Text style={styles.label}>Weapons</Text>
-          <TextInput style={styles.charInfo} placeholder={character.prof.weapons} onChangeText={setWeapons} value={weapons}/>
+          <Text style={styles.label}>Racial Traits</Text>
+          <TextInput style={styles.charInfo} placeholder={character.feat.racial} onChangeText={setRacial} value={racial}/>
         </View>
         <View style={styles.charContainer}>
-          <Text style={styles.label}>Tools</Text>
-          <TextInput style={styles.charInfo} placeholder={character.prof.tools} onChangeText={setTools} value={tools}/>
-        </View>
-        <View style={styles.charContainer}>
-          <Text style={styles.label}>Languages</Text>
-          <TextInput style={styles.charInfo} placeholder={character.prof.lang} onChangeText={setLang} value={lang}/>
+          <Text style={styles.label}>Feats</Text>
+          <TextInput style={styles.charInfo} placeholder={character.feat.feats} onChangeText={setFeats} value={feats}/>
         </View>
       </View>
     )
@@ -46,7 +41,7 @@ const Proficency = ({route, navigation}) => {
     <View style={styles.screen}>
       {showSenses()}
       <Button title="Done" color="#008000" onPress={() => {
-        context.updateCharacter({...character, prof: {armor, weapons, tools, lang}});
+        context.updateCharacter({...character, feat: {classs, racial, feats}});
         navigation.goBack()
         }}/>
     </View>
@@ -90,4 +85,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Proficency;
+export default Features;
