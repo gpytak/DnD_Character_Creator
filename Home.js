@@ -20,6 +20,7 @@ const Home = ({navigation}) => {
       saves: {strSave: "0", dexSave: "0", conSave: "0", intSave: "0", wisSave: "0", chrSave: "0"},
       senses: {passPer: "0", passInv: "0", passIns: "0"},
       skills: {acro: "0", animal: "0", arcana: "0", athl: "0", decep: "0", history: "0", insight: "0", intim: "0", invest: "0", med: "0", nature: "0", percep: "0", perfor: "0", pers: "0", religion: "0", sleight: "0", stealth: "0", survival: "0"},
+      spells: [],
       feat: { classs: 'Class Features', racial: 'Racial Traits', feats: 'Feats'},
       prof: {armor: 'Armor', weapons: 'Weapons', tools: 'Tools', lang: 'Languages'},
       desc: {background: 'Background', align: 'Alignment', gender: 'Gender', eyes: 'Eyes', size: 'Size', height: 'Height', faith: 'Faith', hair: 'Hair', skin: 'Skin', age: "0", weight: "0", traits: 'Personality Traits', ideals: 'Ideals', bonds: 'Bonds', flaws: 'Flaws', appear: 'Appearance'}

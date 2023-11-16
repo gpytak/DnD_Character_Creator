@@ -81,6 +81,7 @@ const App = () => {
         stealth: newCharacter.skills.stealth,
         survival: newCharacter.skills.survival
       },
+      spells: newCharacter.spells,
       feat: {
         classs: newCharacter.feat.classs,
         racial: newCharacter.feat.racial,
