@@ -13,15 +13,30 @@ const Actions = ({route, navigation}) => {
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
 
-  const [armor, setArmor] = useState(character.prof.armor);
+  const [action, setAction] = useState(character.actions.action);
+  const [bonus, setBonus] = useState(character.actions.bonus);
+  const [reaction, setReaction] = useState(character.actions.reaction);
+  const [other, setOther] = useState(character.actions.other);
 
   function showSenses () {
     return (
       <View style={styles.listStats}>
         <Text style={styles.title}>Actions</Text>
         <View style={styles.charContainer}>
-          <Text style={styles.label}>Armor</Text>
-          <TextInput style={styles.charInfo} placeholder={character.prof.armor} onChangeText={setArmor} value={armor}/>
+          <Text style={styles.label}>Actions</Text>
+          <TextInput style={styles.charInfo} placeholder={character.actions.action} onChangeText={setAction} value={action}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Bonus Actions</Text>
+          <TextInput style={styles.charInfo} placeholder={character.actions.bonus} onChangeText={setBonus} value={bonus}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Reactions</Text>
+          <TextInput style={styles.charInfo} placeholder={character.actions.reaction} onChangeText={setReaction} value={reaction}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Other</Text>
+          <TextInput style={styles.charInfo} placeholder={character.actions.other} onChangeText={setOther} value={other}/>
         </View>
       </View>
     )
@@ -31,7 +46,7 @@ const Actions = ({route, navigation}) => {
     <View style={styles.screen}>
       {showSenses()}
       <Button title="Done" color="#008000" onPress={() => {
-        context.updateCharacter({...character, prof: {armor}});
+        context.updateCharacter({...character, actions: {action, bonus, reaction, other}});
         navigation.goBack()
         }}/>
     </View>

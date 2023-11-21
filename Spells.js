@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from 'react';
-import JSON from 'JSON';
+// import JSON from 'JSON';
 import AppContext from './AppContext';
 import {
   StyleSheet,
