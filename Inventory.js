@@ -13,15 +13,25 @@ const Inventory = ({route, navigation}) => {
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
 
-  const [armor, setArmor] = useState(character.prof.armor);
+  const [equip, setEquip] = useState(character.inventory.equip);
+  const [attune, setAttune] = useState(character.inventory.attune);
+  const [other, setOther] = useState(character.inventory.other);
 
   function showSenses () {
     return (
       <View style={styles.listStats}>
         <Text style={styles.title}>Inventory</Text>
         <View style={styles.charContainer}>
-          <Text style={styles.label}>Armor</Text>
-          <TextInput style={styles.charInfo} placeholder={character.prof.armor} onChangeText={setArmor} value={armor}/>
+          <Text style={styles.label}>Equipment</Text>
+          <TextInput style={styles.charInfo} placeholder={character.inventory.equip} onChangeText={setEquip} value={equip}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Attuned Items</Text>
+          <TextInput style={styles.charInfo} placeholder={character.inventory.attune} onChangeText={setAttune} value={attune}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Other Possessions</Text>
+          <TextInput style={styles.charInfo} placeholder={character.prof.other} onChangeText={setOther} value={other}/>
         </View>
       </View>
     )
@@ -31,7 +41,7 @@ const Inventory = ({route, navigation}) => {
     <View style={styles.screen}>
       {showSenses()}
       <Button title="Done" color="#008000" onPress={() => {
-        context.updateCharacter({...character, prof: {armor}});
+        context.updateCharacter({...character, inventory: {equip, attune, other}});
         navigation.goBack()
         }}/>
     </View>

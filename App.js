@@ -87,6 +87,12 @@ const App = () => {
         reaction: newCharacter.actions.reaction,
         other: newCharacter.actions.other
       },
+      inventory: 
+      {
+        equip: newCharacter.inventory.equip,
+        attune: newCharacter.inventory.attune,
+        other: newCharacter.inventory.other
+      },
       spells: newCharacter.spells,
       feat: {
         classs: newCharacter.feat.classs,
