@@ -13,12 +13,11 @@ const Proficency = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
-  const [orientation, setOrientation] = useState('portrait');
 
   useEffect(() => {
     const handleOrientationChange = () => {
       const { width, height } = Dimensions.get('window');
-      setOrientation(width > height ? 'landscape' : 'portrait');
+      context.setOrientation(width > height ? 'landscape' : 'portrait');
     };
     
     Dimensions.addEventListener('change', handleOrientationChange);
@@ -36,7 +35,7 @@ const Proficency = ({route, navigation}) => {
   function showProf() {
     return (
       <View>
-      {orientation === 'portrait' ? (
+      {context.orientation === 'portrait' ? (
         <View style={styles.listStats}>
         <Text style={styles.title}>Proficencies and Languages</Text>
         <View style={styles.charContainer}>

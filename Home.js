@@ -11,12 +11,11 @@ import {
 
 const Home = ({navigation}) => {
   const context = React.useContext(AppContext);
-  const [orientation, setOrientation] = useState('portrait');
 
   useEffect(() => {
     const handleOrientationChange = () => {
       const { width, height } = Dimensions.get('window');
-      setOrientation(width > height ? 'landscape' : 'portrait');
+      context.setOrientation(width > height ? 'landscape' : 'portrait');
     };
     
     Dimensions.addEventListener('change', handleOrientationChange);
@@ -103,7 +102,7 @@ const Home = ({navigation}) => {
 
   return (
     <View>
-      {orientation === 'portrait' ? (
+      {context.orientation === 'portrait' ? (
         portraitMode()
       ) : (
         landscapeMode()

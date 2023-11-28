@@ -2,7 +2,6 @@ import 'react-native-gesture-handler';
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { PaperProvider } from 'react-native-paper';
 
 import AppContext from './AppContext';
 import Home from './Home';
@@ -24,6 +23,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [characters, setCharacters] = useState([]);
+  const [orientation, setOrientation] = useState('portrait');
 
   const addCharacter = (newCharacter) => {
     setCharacters([...characters, {
@@ -139,7 +139,9 @@ const App = () => {
     characters,
     addCharacter,
     removeCharacter,
-    updateCharacter
+    updateCharacter,
+    orientation,
+    setOrientation
   };
 
   return (

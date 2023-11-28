@@ -13,12 +13,11 @@ const Description = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
-  const [orientation, setOrientation] = useState('portrait');
 
   useEffect(() => {
     const handleOrientationChange = () => {
       const { width, height } = Dimensions.get('window');
-      setOrientation(width > height ? 'landscape' : 'portrait');
+      context.setOrientation(width > height ? 'landscape' : 'portrait');
     };
     
     Dimensions.addEventListener('change', handleOrientationChange);
@@ -51,7 +50,7 @@ const Description = ({route, navigation}) => {
   function showDescription() {
     return (
       <View>
-      {orientation === 'portrait' ? (
+      {context.orientation === 'portrait' ? (
         <View style={styles.listStats}>
         <Text style={styles.title}>Description</Text>
         <View style={styles.charContainer}>

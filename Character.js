@@ -13,12 +13,11 @@ const Character = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
-  const [orientation, setOrientation] = useState('portrait');
 
   useEffect(() => {
     const handleOrientationChange = () => {
       const { width, height } = Dimensions.get('window');
-      setOrientation(width > height ? 'landscape' : 'portrait');
+      context.setOrientation(width > height ? 'landscape' : 'portrait');
     };
     
     Dimensions.addEventListener('change', handleOrientationChange);
@@ -42,7 +41,7 @@ const Character = ({route, navigation}) => {
   function showCharacter () {
     return (
       <View>
-      {orientation === 'portrait' ? (
+      {context.orientation === 'portrait' ? (
         <View style={styles.listStats}>
         <Text style={styles.title}>Character</Text>
           <View style={styles.charContainer}>
@@ -114,6 +113,7 @@ const Character = ({route, navigation}) => {
       {showCharacter()}
       <Button title="Done" color="#008000" onPress={() => {
         context.updateCharacter({...character, char: {name, level, xp, race, classs, speed, ac, hp, prof, initiative}});
+        // context.setOrientation(context.orientation);
         navigation.goBack()
         }}/>
     </View>
