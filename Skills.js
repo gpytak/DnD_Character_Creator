@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
   Text,
-  TextInput
+  TextInput,
+  Dimensions
 } from 'react-native';
 
 const Skills = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
+  const [orientation, setOrientation] = useState('portrait');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
 
   const [acro, setAcro] = useState(character.skills.acro);
   const [animal, setAnimal] = useState(character.skills.animal);
@@ -36,9 +51,11 @@ const Skills = ({route, navigation}) => {
   const [stealth, setStealth] = useState(character.skills.stealth);
   const [survival, setSurvival] = useState(character.skills.survival);
 
-  function showSenses () {
+  function showSkills() {
     return (
-      <View style={styles.listStats}>
+      <View>
+      {orientation === 'portrait' ? (
+        <View style={styles.listStats}>
         <Text style={styles.title}>Skills</Text>
         <View style={styles.charContainer}>
           <Text style={styles.label}>Acrobatics</Text>
@@ -95,12 +112,60 @@ const Skills = ({route, navigation}) => {
           <TextInput style={styles.charInfo} placeholder={character.senses.survival} onChangeText={setSurvival} value={survival}/>
         </View>
       </View>
+      ) : (
+        <View style={styles.listStats}>
+        <Text style={styles.title}>Skills</Text>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Acrobatics</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.acro} onChangeText={setAcro} value={acro}/>
+          <Text style={styles.label}>Animal Handling</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.animal} onChangeText={setAnimal} value={animal}/>
+          <Text style={styles.label}>Arcana</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.arcana} onChangeText={setArcana} value={arcana}/>
+          <Text style={styles.label}>Athletics</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.athl} onChangeText={setAthl} value={athl}/>
+          <Text style={styles.label}>Deception</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.decep} onChangeText={setDecep} value={decep}/>
+          <Text style={styles.label}>History</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.history} onChangeText={setHistory} value={history}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Insight</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.insight} onChangeText={setInsight} value={insight}/>
+          <Text style={styles.label}>Intimidation</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.intim} onChangeText={setIntim} value={intim}/>
+          <Text style={styles.label}>Investigation</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.invest} onChangeText={setInvest} value={invest}/>
+          <Text style={styles.label}>Medicine</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.med} onChangeText={setMed} value={med}/>
+          <Text style={styles.label}>Nature</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.nature} onChangeText={setNature} value={nature}/>
+          <Text style={styles.label}>Perception</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.percep} onChangeText={setPercep} value={percep}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Performance</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.perfor} onChangeText={setPerfor} value={perfor}/>
+          <Text style={styles.label}>Persuasion</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.pers} onChangeText={setPers} value={pers}/>
+          <Text style={styles.label}>Religion</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.religion} onChangeText={setReligion} value={religion}/>
+          <Text style={styles.label}>Sleight of Hand</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.sleight} onChangeText={setSleight} value={sleight}/>
+          <Text style={styles.label}>Stealth</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.stealth} onChangeText={setStealth} value={stealth}/>
+          <Text style={styles.label}>Survival</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.survival} onChangeText={setSurvival} value={survival}/>
+        </View>
+      </View>
+      )}
+    </View>
     )
   }
 
   return (
     <View style={styles.screen}>
-      {showSenses()}
+      {showSkills()}
       <Button title="Done" color="#008000" onPress={() => {
         context.updateCharacter({...character, skills: {acro, animal, arcana, athl, decep, history, insight, intim, invest, med, nature, percep, perfor, pers, religion, sleight, stealth, survival}});
         navigation.goBack()

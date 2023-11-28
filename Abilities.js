@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
   Text,
-  TextInput
+  TextInput,
+  Dimensions
 } from 'react-native';
 
 const Abilities = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
+  const [orientation, setOrientation] = useState('portrait');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
 
   const [str, setStr] = useState(character.abilities.str);
   const [dex, setDex] = useState(character.abilities.dex);
@@ -22,7 +37,9 @@ const Abilities = ({route, navigation}) => {
 
   function showAbilities () {
     return (
-      <View style={styles.listStats}>
+      <View>
+      {orientation === 'portrait' ? (
+        <View style={styles.listStats}>
         <Text style={styles.title}>Abilities</Text>
         <View style={styles.charContainer}>
           <Text style={styles.label}>Strength</Text>
@@ -49,6 +66,30 @@ const Abilities = ({route, navigation}) => {
           <TextInput style={styles.charInfo} placeholder={character.abilities.chr} onChangeText={setChr} value={chr}/>
         </View>
       </View>
+      ) : (
+        <View style={styles.listStats}>
+        <Text style={styles.title}>Abilities</Text>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Strength</Text>
+          <TextInput style={styles.charInfo} placeholder={character.abilities.str} onChangeText={setStr} value={str}/>
+          <Text style={styles.label}>Dexterity</Text>
+          <TextInput style={styles.charInfo} placeholder={character.abilities.dex} onChangeText={setDex} value={dex}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Constitution</Text>
+          <TextInput style={styles.charInfo} placeholder={character.abilities.con} onChangeText={setCon} value={con}/>
+          <Text style={styles.label}>Intelligence</Text>
+          <TextInput style={styles.charInfo} placeholder={character.abilities.int} onChangeText={setInt} value={int}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Wisdom</Text>
+          <TextInput style={styles.charInfo} placeholder={character.abilities.wis} onChangeText={setWis} value={wis}/>
+          <Text style={styles.label}>Charisma</Text>
+          <TextInput style={styles.charInfo} placeholder={character.abilities.chr} onChangeText={setChr} value={chr}/>
+        </View>
+      </View>
+      )}
+    </View>
     )
   }
 

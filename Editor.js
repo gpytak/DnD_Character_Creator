@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
-  Text
+  Text,
+  Dimensions
 } from 'react-native';
 import { Drawer } from 'react-native-paper';
 
@@ -12,9 +13,24 @@ const Editor = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
+  const [orientation, setOrientation] = useState('portrait');
 
-  return (
-    <View style={styles.screen}>
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
+
+  function portraitMode() {
+    return (
+      <View style={styles.screen}>
       <Text style={styles.title}>{character.char.name}</Text>
       <Drawer.Section>
         <Drawer.Item
@@ -67,8 +83,77 @@ const Editor = ({route, navigation}) => {
         navigation.goBack()
         }}/>
     </View>
+    )
+  }
+
+  function landscapeMode() {
+    return (
+      <View style={styles.screen}>
+      <Text style={styles.title}>{character.char.name}</Text>
+      <Drawer.Section>
+        <Drawer.Item
+          label="Character"
+          onPress={() => navigation.navigate('Character', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Abilities"
+          onPress={() => navigation.navigate('Abilities', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Saves"
+          onPress={() => navigation.navigate('Saves', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Senses"
+          onPress={() => navigation.navigate('Senses', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Skills"
+          onPress={() => navigation.navigate('Skills', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Actions"
+          onPress={() => navigation.navigate('Actions', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Inventory"
+          onPress={() => navigation.navigate('Inventory', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Spells"
+          onPress={() => navigation.navigate('Spells', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Features and Traits"
+          onPress={() => navigation.navigate('Features', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Proficency"
+          onPress={() => navigation.navigate('Proficency', { characterID: character.id })}
+        />
+        <Drawer.Item
+          label="Description"
+          onPress={() => navigation.navigate('Description', { characterID: character.id })}
+        />
+      </Drawer.Section>
+      
+      <Button title="Done" color="#008000" onPress={() => {
+        navigation.goBack()
+        }}/>
+    </View>
+    )
+  }
+
+  return (
+    <View>
+      {orientation === 'portrait' ? (
+        portraitMode()
+      ) : (
+        landscapeMode()
+      )}
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   screen: {

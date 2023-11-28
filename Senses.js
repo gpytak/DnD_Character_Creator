@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
   Text,
-  TextInput
+  TextInput,
+  Dimensions
 } from 'react-native';
 
 const Senses = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
+  const [orientation, setOrientation] = useState('portrait');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
 
   const [passPer, setPassPer] = useState(character.senses.passPer);
   const [passInv, setPassInv] = useState(character.senses.passInv);
@@ -19,7 +34,9 @@ const Senses = ({route, navigation}) => {
 
   function showSenses () {
     return (
-      <View style={styles.listStats}>
+      <View>
+      {orientation === 'portrait' ? (
+        <View style={styles.listStats}>
         <Text style={styles.title}>Senses</Text>
         <View style={styles.charContainer}>
           <Text style={styles.label}>Passive Perception</Text>
@@ -34,6 +51,24 @@ const Senses = ({route, navigation}) => {
           <TextInput style={styles.charInfo} placeholder={character.senses.passIns} onChangeText={setPassIns} value={passIns}/>
         </View>
       </View>
+      ) : (
+        <View style={styles.listStats}>
+        <Text style={styles.title}>Senses</Text>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Passive Perception</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.passPer} onChangeText={setPassPer} value={passPer}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Passive Investigation</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.passInv} onChangeText={setPassInv} value={passInv}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Passive Insight</Text>
+          <TextInput style={styles.charInfo} placeholder={character.senses.passIns} onChangeText={setPassIns} value={passIns}/>
+        </View>
+      </View>
+      )}
+    </View>
     )
   }
 

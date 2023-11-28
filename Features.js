@@ -1,25 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
   Text,
-  TextInput
+  TextInput,
+  Dimensions
 } from 'react-native';
 
 const Features = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
+  const [orientation, setOrientation] = useState('portrait');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
 
   const [classs, setClasss] = useState(character.feat.classs);
   const [racial, setRacial] = useState(character.feat.racial);
   const [feats, setFeats] = useState(character.feat.feats);
 
-  function showSenses () {
+  function showFeatures() {
     return (
-      <View style={styles.listStats}>
+      <View>
+      {orientation === 'portrait' ? (
+        <View style={styles.listStats}>
         <Text style={styles.title}>Features and Traits</Text>
         <View style={styles.charContainer}>
           <Text style={styles.label}>Class Features</Text>
@@ -34,12 +51,30 @@ const Features = ({route, navigation}) => {
           <TextInput style={styles.charInfo} placeholder={character.feat.feats} onChangeText={setFeats} value={feats}/>
         </View>
       </View>
+      ) : (
+        <View style={styles.listStats}>
+        <Text style={styles.title}>Features and Traits</Text>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Class Features</Text>
+          <TextInput style={styles.charInfo} placeholder={character.feat.classs} onChangeText={setClasss} value={classs}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Racial Traits</Text>
+          <TextInput style={styles.charInfo} placeholder={character.feat.racial} onChangeText={setRacial} value={racial}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Feats</Text>
+          <TextInput style={styles.charInfo} placeholder={character.feat.feats} onChangeText={setFeats} value={feats}/>
+        </View>
+      </View>
+      )}
+    </View>
     )
   }
 
   return (
     <View style={styles.screen}>
-      {showSenses()}
+      {showFeatures()}
       <Button title="Done" color="#008000" onPress={() => {
         context.updateCharacter({...character, feat: {classs, racial, feats}});
         navigation.goBack()

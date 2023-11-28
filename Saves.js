@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
   Text,
-  TextInput
+  TextInput,
+  Dimensions
 } from 'react-native';
 
 const Saves = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
+  const [orientation, setOrientation] = useState('portrait');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
 
   const [strSave, setStrSave] = useState(character.saves.strSave);
   const [dexSave, setDexSave] = useState(character.saves.dexSave);
@@ -22,7 +37,9 @@ const Saves = ({route, navigation}) => {
 
   function showSaves () {
     return (
-      <View style={styles.listStats}>
+      <View>
+      {orientation === 'portrait' ? (
+        <View style={styles.listStats}>
         <Text style={styles.title}>Saves</Text>
         <View style={styles.charContainer}>
           <Text style={styles.label}>Strength Save</Text>
@@ -49,6 +66,30 @@ const Saves = ({route, navigation}) => {
           <TextInput style={styles.charInfo} placeholder={character.saves.chrSave} onChangeText={setChrSave} value={chrSave}/>
         </View>
       </View>
+      ) : (
+        <View style={styles.listStats}>
+        <Text style={styles.title}>Saves</Text>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Strength Save</Text>
+          <TextInput style={styles.charInfo} placeholder={character.saves.strSave} onChangeText={setStrSave} value={strSave}/>
+          <Text style={styles.label}>Dexterity Save</Text>
+          <TextInput style={styles.charInfo} placeholder={character.saves.dexSave} onChangeText={setDexSave} value={dexSave}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Constitution Save</Text>
+          <TextInput style={styles.charInfo} placeholder={character.saves.conSave} onChangeText={setConSave} value={conSave}/>
+          <Text style={styles.label}>Intelligence Save</Text>
+          <TextInput style={styles.charInfo} placeholder={character.saves.intSave} onChangeText={setIntSave} value={intSave}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Wisdom Save</Text>
+          <TextInput style={styles.charInfo} placeholder={character.saves.wisSave} onChangeText={setWisSave} value={wisSave}/>
+          <Text style={styles.label}>Charisma Save</Text>
+          <TextInput style={styles.charInfo} placeholder={character.saves.chrSave} onChangeText={setChrSave} value={chrSave}/>
+        </View>
+      </View>
+      )}
+    </View>
     )
   }
 

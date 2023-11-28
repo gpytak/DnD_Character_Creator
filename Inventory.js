@@ -1,25 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
   Text,
-  TextInput
+  TextInput,
+  Dimensions
 } from 'react-native';
 
 const Inventory = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
+  const [orientation, setOrientation] = useState('portrait');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
 
   const [equip, setEquip] = useState(character.inventory.equip);
   const [attune, setAttune] = useState(character.inventory.attune);
   const [other, setOther] = useState(character.inventory.other);
 
-  function showSenses () {
+  function showInventory() {
     return (
-      <View style={styles.listStats}>
+      <View>
+      {orientation === 'portrait' ? (
+        <View style={styles.listStats}>
         <Text style={styles.title}>Inventory</Text>
         <View style={styles.charContainer}>
           <Text style={styles.label}>Equipment</Text>
@@ -34,12 +51,30 @@ const Inventory = ({route, navigation}) => {
           <TextInput style={styles.charInfo} placeholder={character.prof.other} onChangeText={setOther} value={other}/>
         </View>
       </View>
+      ) : (
+        <View style={styles.listStats}>
+        <Text style={styles.title}>Inventory</Text>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Equipment</Text>
+          <TextInput style={styles.charInfo} placeholder={character.inventory.equip} onChangeText={setEquip} value={equip}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Attuned Items</Text>
+          <TextInput style={styles.charInfo} placeholder={character.inventory.attune} onChangeText={setAttune} value={attune}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Other Possessions</Text>
+          <TextInput style={styles.charInfo} placeholder={character.prof.other} onChangeText={setOther} value={other}/>
+        </View>
+      </View>
+      )}
+    </View>
     )
   }
 
   return (
     <View style={styles.screen}>
-      {showSenses()}
+      {showInventory()}
       <Button title="Done" color="#008000" onPress={() => {
         context.updateCharacter({...character, inventory: {equip, attune, other}});
         navigation.goBack()

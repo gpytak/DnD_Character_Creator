@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
   Text,
-  TextInput
+  TextInput,
+  Dimensions
 } from 'react-native';
 
 const Description = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
+  const [orientation, setOrientation] = useState('portrait');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
 
   const [background, setBackground] = useState(character.desc.background);
   const [align, setAlign] = useState(character.desc.align);
@@ -33,9 +48,11 @@ const Description = ({route, navigation}) => {
   const [flaws, setFlaws] = useState(character.desc.flaws);
   const [appear, setAppear] = useState(character.desc.appear);
 
-  function showSenses () {
+  function showDescription() {
     return (
-      <View style={styles.listStats}>
+      <View>
+      {orientation === 'portrait' ? (
+        <View style={styles.listStats}>
         <Text style={styles.title}>Description</Text>
         <View style={styles.charContainer}>
           <Text style={styles.label}>Background</Text>
@@ -86,12 +103,56 @@ const Description = ({route, navigation}) => {
           <TextInput style={styles.charInfo} placeholder={character.desc.appear} onChangeText={setAppear} value={appear}/>
         </View>
       </View>
+      ) : (
+        <View style={styles.listStats}>
+        <Text style={styles.title}>Description</Text>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Background</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.background} onChangeText={setBackground} value={background}/>
+          <Text style={styles.label}>Alignment</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.align} onChangeText={setAlign} value={align}/>
+          <Text style={styles.label}>Gender</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.gender} onChangeText={setGender} value={gender}/>
+          <Text style={styles.label}>Eyes</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.eyes} onChangeText={setEyes} value={eyes}/>
+          <Text style={styles.label}>Size</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.size} onChangeText={setSize} value={size}/>
+          <Text style={styles.label}>Height</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.height} onChangeText={setHeight} value={height}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Faith</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.faith} onChangeText={setFaith} value={faith}/>
+          <Text style={styles.label}>Hair</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.hair} onChangeText={setHair} value={hair}/>
+          <Text style={styles.label}>Skin</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.skin} onChangeText={setSkin} value={skin}/>
+          <Text style={styles.label}>Age</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.age} onChangeText={setAge} value={age}/>
+          <Text style={styles.label}>Weight</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.weight} onChangeText={setWeight} value={weight}/>
+          <Text style={styles.label}>Personality Traits</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.traits} onChangeText={setTraits} value={traits}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Ideals</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.ideals} onChangeText={setIdeals} value={ideals}/>
+          <Text style={styles.label}>Bonds</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.bonds} onChangeText={setBonds} value={bonds}/>
+          <Text style={styles.label}>Flaws</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.flaws} onChangeText={setFlaws} value={flaws}/>
+          <Text style={styles.label}>Appearance</Text>
+          <TextInput style={styles.charInfo} placeholder={character.desc.appear} onChangeText={setAppear} value={appear}/>
+        </View>
+      </View>
+      )}
+    </View>
     )
   }
 
   return (
     <View style={styles.screen}>
-      {showSenses()}
+      {showDescription()}
       <Button title="Done" color="#008000" onPress={() => {
         context.updateCharacter({...character, desc: {background, align, gender, eyes, size, height, faith, hair, skin, age, weight, traits, ideals, bonds, flaws, appear}});
         navigation.goBack()

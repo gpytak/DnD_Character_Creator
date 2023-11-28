@@ -1,0 +1,1 @@
+inventory: { equip: 'Equipment', attune: 'Attuned Items', other: 'Other Possessions'}

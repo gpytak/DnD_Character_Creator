@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
   Text,
-  FlatList
+  FlatList,
+  Dimensions
 } from 'react-native';
-// import { Button } from 'react-native-paper';
 
 const Home = ({navigation}) => {
   const context = React.useContext(AppContext);
+  const [orientation, setOrientation] = useState('portrait');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
 
   function createCharacter() {
     context.addCharacter({
@@ -29,14 +43,15 @@ const Home = ({navigation}) => {
     });
   }
 
-  return (
-    <View style={styles.screen}>
-      <Text style={styles.title}>Dungeons & Dragons</Text>
-      <Text style={styles.title2}>Character Creator</Text>
-      <View style={styles.listButtons}>
-        <Button title="New Character" icon="bathtub" mode="contained" color="#008000" onPress={() => {createCharacter()}}/>
-        <Button title="About" onPress={() => {navigation.navigate('About')}}/>
-      </View>
+  function portraitMode() {
+    return (
+      <View style={styles.screen}>
+        <Text style={styles.title}>Dungeons & Dragons</Text>
+        <Text style={styles.title2}>Character Creator</Text>
+        <View style={styles.listButtons}>
+          <Button title="New Character" icon="bathtub" mode="contained" color="#008000" onPress={() => {createCharacter()}}/>
+          <Button title="About" onPress={() => {navigation.navigate('About')}}/>
+        </View>
 
       <FlatList
         data={context.characters}
@@ -53,6 +68,46 @@ const Home = ({navigation}) => {
         }
         keyExtractor={(item) => item.id}
       />
+    </View>
+    )
+  }
+
+  function landscapeMode() {
+    return (
+      <View style={styles.screen}>
+        <Text style={styles.title}>Dungeons & Dragons</Text>
+        <Text style={styles.title2}>Character Creator</Text>
+        <View style={styles.listButtons}>
+          <Button title="New Character" icon="bathtub" mode="contained" color="#008000" onPress={() => {createCharacter()}}/>
+          <Button title="About" onPress={() => {navigation.navigate('About')}}/>
+        </View>
+
+      <FlatList
+        data={context.characters}
+        renderItem={({ item }) =>
+          <View style={styles.charContainer}>
+            <Text style={styles.charItem}>{item.char.name}</Text>
+            <Text style={styles.charItem}>{item.char.race}</Text>
+            <Text style={styles.charItem}>{item.char.level}</Text>
+            <View style={styles.itemButtons}>
+              <Button title="Edit" color="#008000" onPress={() => {navigation.navigate('Editor', { characterID: item.id })}}/>
+              <Button title="X" color="red" onPress={() => context.removeCharacter(item.id)}/>
+            </View>
+          </View>
+        }
+        keyExtractor={(item) => item.id}
+      />
+    </View>
+    )
+  }
+
+  return (
+    <View>
+      {orientation === 'portrait' ? (
+        portraitMode()
+      ) : (
+        landscapeMode()
+      )}
     </View>
   );
 };
@@ -75,7 +130,7 @@ const styles = StyleSheet.create({
   listButtons: {
     padding: 10,
     flexDirection: 'row',
-    gap: 170,
+    justifyContent: 'space-between',
     alignItems: 'center',
     borderColor: 'grey'
   },
@@ -101,6 +156,5 @@ const styles = StyleSheet.create({
     borderColor: 'grey'
   }
 });
-
 
 export default Home;

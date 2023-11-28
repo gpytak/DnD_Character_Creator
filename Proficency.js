@@ -1,26 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 import {
   StyleSheet,
   View,
   Button,
   Text,
-  TextInput
+  TextInput,
+  Dimensions
 } from 'react-native';
 
 const Proficency = ({route, navigation}) => {
   const context = React.useContext(AppContext);
   const { characterID } = route.params;
   const [character] = context.characters.filter((t) => t.id == characterID);
+  const [orientation, setOrientation] = useState('portrait');
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const { width, height } = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+    
+    Dimensions.addEventListener('change', handleOrientationChange);
+
+    return () => {
+      Dimensions.removeEventListener('change', handleOrientationChange);
+    };
+  }, []);
 
   const [armor, setArmor] = useState(character.prof.armor);
   const [weapons, setWeapons] = useState(character.prof.weapons);
   const [tools, setTools] = useState(character.prof.tools);
   const [lang, setLang] = useState(character.prof.lang);
 
-  function showSenses () {
+  function showProf() {
     return (
-      <View style={styles.listStats}>
+      <View>
+      {orientation === 'portrait' ? (
+        <View style={styles.listStats}>
         <Text style={styles.title}>Proficencies and Languages</Text>
         <View style={styles.charContainer}>
           <Text style={styles.label}>Armor</Text>
@@ -39,12 +56,30 @@ const Proficency = ({route, navigation}) => {
           <TextInput style={styles.charInfo} placeholder={character.prof.lang} onChangeText={setLang} value={lang}/>
         </View>
       </View>
+      ) : (
+        <View style={styles.listStats}>
+        <Text style={styles.title}>Proficencies and Languages</Text>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Armor</Text>
+          <TextInput style={styles.charInfo} placeholder={character.prof.armor} onChangeText={setArmor} value={armor}/>
+          <Text style={styles.label}>Weapons</Text>
+          <TextInput style={styles.charInfo} placeholder={character.prof.weapons} onChangeText={setWeapons} value={weapons}/>
+        </View>
+        <View style={styles.charContainer}>
+          <Text style={styles.label}>Tools</Text>
+          <TextInput style={styles.charInfo} placeholder={character.prof.tools} onChangeText={setTools} value={tools}/>
+          <Text style={styles.label}>Languages</Text>
+          <TextInput style={styles.charInfo} placeholder={character.prof.lang} onChangeText={setLang} value={lang}/>
+        </View>
+      </View>
+      )}
+    </View>
     )
   }
 
   return (
     <View style={styles.screen}>
-      {showSenses()}
+      {showProf()}
       <Button title="Done" color="#008000" onPress={() => {
         context.updateCharacter({...character, prof: {armor, weapons, tools, lang}});
         navigation.goBack()
