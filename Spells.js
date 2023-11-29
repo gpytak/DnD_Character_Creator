@@ -115,6 +115,9 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 17.5,
   },
+  picker: {
+    color: 'black'
+  },
   listSpells: { 
     color: 'black',
     flexDirection: "row",
